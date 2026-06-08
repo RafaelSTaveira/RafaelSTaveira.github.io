@@ -182,6 +182,11 @@
 
   /* ── SECTION BASE ───────────────────────────────── */
   section { padding: 6rem 6vw; }
+  .section-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
   .section-label {
     font-family: var(--mono);
     font-size: 0.72rem;
@@ -198,41 +203,27 @@
   }
   .section-desc {
     color: var(--muted);
-    max-width: 500px;
     margin-bottom: 3rem;
     font-size: 0.95rem;
   }
 
   /* ── ABOUT ──────────────────────────────────────── */
-  #sobre { display: flex; flex-direction: column; align-items: center; }
   .about-grid {
     display: grid;
     grid-template-columns: 1fr;
-    max-width: 720px;
-    margin: 0 auto;
   }
   .about-text p {
     color: var(--muted);
     margin-bottom: 1rem;
     font-size: 0.95rem;
     line-height: 1.9;
+    max-width: 72ch;
   }
   .about-text p strong { color: var(--text); }
 
   /* ── STACK ──────────────────────────────────────── */
-  #stack {
-    background: var(--bg-card);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .stack-groups {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    max-width: 880px;
-    margin: 0 auto;
-  }
+  #stack { background: var(--bg-card); }
+  .stack-groups { display: flex; flex-direction: column; gap: 2rem; }
   .stack-group-label {
     font-family: var(--mono);
     font-size: 0.72rem;
@@ -340,7 +331,6 @@
     border: 1px solid rgba(155,109,247,0.25);
     border-radius: 20px;
     padding: 2.4rem;
-    max-width: 760px;
     position: relative;
     overflow: hidden;
   }
@@ -475,6 +465,7 @@
     .nav-links { gap: 1.2rem; }
     section { padding: 4rem 4vw; }
     .hero { padding: 6rem 4vw 4rem; }
+    .section-inner { width: 100%; }
   }
   @media (min-width: 1000px) {
     .hero-photo { display: block; }
@@ -532,33 +523,36 @@
 
 <!-- SOBRE -->
 <section id="sobre">
-  <div class="reveal">
-    <p class="section-label">// sobre mim</p>
-    <h2 class="section-title">Quem sou</h2>
-  </div>
-  <div class="about-grid reveal">
-    <div class="about-text">
-      <p>
-        Estudante de <strong>Ciência da Computação pela UFG</strong> em fase final de graduação,
-        com experiência prática em engenharia de dados, machine learning e desenvolvimento backend,
-        adquirida na <strong>Residência Tecnológica BRISA/SOFTEX</strong>.
-      </p>
-      <p>
-        Pesquisador no <strong>HAILab</strong> (Human and Artificial Intelligence Lab),
-        com foco em Explainable AI — interpretabilidade de modelos, explicações
-        contrafactuais e métricas de qualidade de explicações. Minha pesquisa resultou em
-        publicação submetida ao <strong>IEEE SoutheastCon 2026</strong>.
-      </p>
-      <p>
-        Baseado em <strong>Goiânia, GO</strong>. Disponível para posições remotas em
-        análise de dados, ciência de dados e engenharia de dados.
-      </p>
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">// sobre mim</p>
+      <h2 class="section-title">Quem sou</h2>
+    </div>
+    <div class="about-grid reveal">
+      <div class="about-text">
+        <p>
+          Estudante de <strong>Ciência da Computação pela UFG</strong> em fase final de graduação,
+          com experiência prática em engenharia de dados, machine learning e desenvolvimento backend,
+          adquirida na <strong>Residência Tecnológica BRISA/SOFTEX</strong>.
+        </p>
+        <p>
+          Pesquisador no <strong>HAILab</strong> (Human and Artificial Intelligence Lab),
+          com foco em Explainable AI — interpretabilidade de modelos, explicações
+          contrafactuais e métricas de qualidade de explicações. Minha pesquisa resultou em
+          publicação submetida ao <strong>IEEE SoutheastCon 2026</strong>.
+        </p>
+        <p>
+          Baseado em <strong>Goiânia, GO</strong>. Disponível para posições remotas em
+          análise de dados, ciência de dados e engenharia de dados.
+        </p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- STACK -->
 <section id="stack">
+  <div class="section-inner">
   <div class="reveal">
     <p class="section-label">// tecnologias</p>
     <h2 class="section-title">Stack</h2>
@@ -632,10 +626,12 @@
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- PROJETOS -->
 <section id="projetos">
+  <div class="section-inner">
   <div class="reveal">
     <p class="section-label">// projetos</p>
     <h2 class="section-title">O que construí</h2>
@@ -789,10 +785,12 @@
     </div>
 
   </div>
+  </div>
 </section>
 
 <!-- RESEARCH -->
 <section id="research">
+  <div class="section-inner">
   <div class="reveal">
     <p class="section-label">// pesquisa</p>
     <h2 class="section-title">Publicação Científica</h2>
@@ -817,10 +815,12 @@
       </div>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- EXPERIÊNCIA -->
 <section id="experiencia">
+  <div class="section-inner">
   <div class="reveal">
     <p class="section-label">// experiência</p>
     <h2 class="section-title">Trajetória</h2>
@@ -859,15 +859,17 @@
       <p class="exp-period">2021 – 2026</p>
     </div>
   </div>
+  </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="contact-glow"></div>
+  <div class="section-inner">
   <div class="reveal">
     <p class="section-label">// contato</p>
     <h2 class="section-title">Vamos conversar?</h2>
-    <p class="section-desc" style="margin: 0 auto 0; text-align: center;">
+    <p class="section-desc" style="text-align: center;">
       Aberto a oportunidades remotas júnior em dados, IA e backend.
     </p>
   </div>
@@ -884,6 +886,7 @@
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
       GitHub
     </a>
+  </div>
   </div>
 </section>
 
