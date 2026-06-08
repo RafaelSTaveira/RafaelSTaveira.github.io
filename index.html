@@ -206,9 +206,8 @@
   /* ── ABOUT ──────────────────────────────────────── */
   .about-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: start;
+    grid-template-columns: 1fr;
+    max-width: 720px;
   }
   .about-text p {
     color: var(--muted);
@@ -217,30 +216,6 @@
     line-height: 1.9;
   }
   .about-text p strong { color: var(--text); }
-  .about-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-  .stat-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.4rem;
-    transition: border-color 0.2s;
-  }
-  .stat-card:hover { border-color: var(--border-h); }
-  .stat-num {
-    font-size: 2rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--blue), var(--purple));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-    margin-bottom: 0.3rem;
-  }
-  .stat-label { font-size: 0.8rem; color: var(--muted); }
 
   /* ── STACK ──────────────────────────────────────── */
   #stack { background: var(--bg-card); }
@@ -481,7 +456,6 @@
 
   /* ── RESPONSIVE ─────────────────────────────────── */
   @media (max-width: 768px) {
-    .about-grid { grid-template-columns: 1fr; }
     .exp-card { grid-template-columns: 1fr; }
     nav { padding: 1rem 4vw; }
     .nav-links { gap: 1.2rem; }
@@ -565,24 +539,6 @@
         Baseado em <strong>Goiânia, GO</strong>. Disponível para posições remotas em
         análise de dados, ciência de dados e engenharia de dados.
       </p>
-    </div>
-    <div class="about-stats">
-      <div class="stat-card">
-        <div class="stat-num">1</div>
-        <div class="stat-label">publicação IEEE submetida</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">4+</div>
-        <div class="stat-label">projetos técnicos na residência</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">40%</div>
-        <div class="stat-label">redução em rotinas manuais</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num">200h</div>
-        <div class="stat-label">formação backend Python/Django</div>
-      </div>
     </div>
   </div>
 </section>
