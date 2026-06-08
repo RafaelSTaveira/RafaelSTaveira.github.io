@@ -318,6 +318,7 @@
   }
   .project-link:hover { gap: 0.65rem; }
   .project-link svg { width: 13px; height: 13px; }
+  .project-links { display: flex; gap: 1.2rem; flex-wrap: wrap; }
 
   /* ── RESEARCH ───────────────────────────────────── */
   #research { background: var(--bg-card); }
@@ -648,6 +649,33 @@
         ver no GitHub
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
       </a>
+    </div>
+
+    <div class="project-card featured">
+      <div class="project-icon">📈</div>
+      <h3 class="project-title">Previsão de Inflação (IPCA) — Séries Temporais</h3>
+      <p class="project-desc">
+        Pipeline completo de séries temporais sobre dados reais de inflação (API do Banco Central):
+        EDA, teste de estacionariedade, decomposição STL, modelos Prophet e SARIMA com avaliação
+        comparativa (MAE/RMSE/MAPE) e dashboard interativo publicado.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">Prophet</span>
+        <span class="project-tag">SARIMA</span>
+        <span class="project-tag">statsmodels</span>
+        <span class="project-tag">Streamlit</span>
+      </div>
+      <div class="project-links">
+        <a href="https://github.com/RafaelSTaveira/analise-series-temporais-vendas" target="_blank" class="project-link">
+          ver no GitHub
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+        <a href="https://mff3sx8iw7wqhjvi5jmez8.streamlit.app/" target="_blank" class="project-link">
+          ver dashboard ao vivo
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+        </a>
+      </div>
     </div>
 
     <div class="project-card">
