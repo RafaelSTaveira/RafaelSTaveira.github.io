@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rafael Taveira — Dados & IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #07070f;
+    --bg-card:  #0e0e1c;
+    --bg-card2: #13132a;
+    --blue:     #5b8df6;
+    --blue-dim: #3a5fc8;
+    --purple:   #9b6df7;
+    --purple-dim:#6b40c4;
+    --text:     #dde3f0;
+    --muted:    #7a85a0;
+    --border:   rgba(255,255,255,0.07);
+    --border-h: rgba(255,255,255,0.14);
+    --glow-b:   rgba(91,141,246,0.18);
+    --glow-p:   rgba(155,109,247,0.15);
+    --mono:     'JetBrains Mono', monospace;
+    --sans:     'Sora', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.1rem 6vw;
+    background: rgba(7,7,15,0.72);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    font-family: var(--mono);
+    font-size: 0.9rem;
+    color: var(--blue);
+    letter-spacing: 0.04em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  /* ── HERO ───────────────────────────────────────── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 7rem 6vw 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 40%, rgba(91,141,246,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 20% 70%, rgba(155,109,247,0.10) 0%, transparent 70%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0; opacity: 0.025;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .hero-content { position: relative; z-index: 1; max-width: 680px; }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(91,141,246,0.1);
+    border: 1px solid rgba(91,141,246,0.25);
+    border-radius: 999px;
+    padding: 0.3rem 0.9rem;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--blue);
+    margin-bottom: 1.6rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--blue);
+    animation: pulse 2s ease infinite;
+  }
+
+  h1 {
+    font-size: clamp(2.6rem, 6vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.3rem;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+  .hero-name-accent {
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    color: var(--muted);
+    margin-bottom: 1.4rem;
+    font-weight: 300;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+  .hero-desc {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.8;
+    max-width: 520px;
+    margin-bottom: 2.4rem;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+  .hero-desc strong { color: var(--text); font-weight: 600; }
+
+  .hero-ctas {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, var(--blue-dim), var(--purple-dim));
+    color: #fff;
+    padding: 0.75rem 1.6rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: opacity 0.2s, transform 0.2s;
+    border: none; cursor: pointer;
+  }
+  .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--text);
+    padding: 0.75rem 1.6rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    border: 1px solid var(--border-h);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--blue); background: rgba(91,141,246,0.06); }
+
+  .hero-photo {
+    position: absolute; right: 8vw; top: 50%; transform: translateY(-50%);
+    width: 240px; height: 240px;
+    border-radius: 50%;
+    border: 2px solid rgba(91,141,246,0.3);
+    object-fit: cover;
+    box-shadow: 0 0 60px rgba(91,141,246,0.2), 0 0 120px rgba(155,109,247,0.1);
+    animation: fadeUp 0.8s 0.5s ease both;
+    display: none;
+  }
+
+  /* ── SECTION BASE ───────────────────────────────── */
+  section { padding: 6rem 6vw; }
+  .section-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--blue);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .section-desc {
+    color: var(--muted);
+    max-width: 500px;
+    margin-bottom: 3rem;
+    font-size: 0.95rem;
+  }
+
+  /* ── ABOUT ──────────────────────────────────────── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    line-height: 1.9;
+  }
+  .about-text p strong { color: var(--text); }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.4rem;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--border-h); }
+  .stat-num {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--blue), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); }
+
+  /* ── STACK ──────────────────────────────────────── */
+  #stack { background: var(--bg-card); }
+  .stack-groups { display: flex; flex-direction: column; gap: 2rem; }
+  .stack-group-label {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--purple);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.8rem;
+  }
+  .stack-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .tag {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.35rem 0.85rem;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .tag:hover { border-color: var(--blue); background: rgba(91,141,246,0.07); }
+  .tag-blue { border-color: rgba(91,141,246,0.3); color: var(--blue); }
+  .tag-purple { border-color: rgba(155,109,247,0.3); color: var(--purple); }
+
+  /* ── PROJECTS ───────────────────────────────────── */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .project-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.8rem;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    display: flex; flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--blue), var(--purple));
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .project-card:hover {
+    border-color: var(--border-h);
+    transform: translateY(-3px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  }
+  .project-card:hover::before { opacity: 1; }
+  .project-card.featured {
+    border-color: rgba(91,141,246,0.25);
+    background: linear-gradient(135deg, rgba(91,141,246,0.05), rgba(155,109,247,0.05));
+  }
+  .project-card.featured::before { opacity: 1; }
+
+  .project-icon {
+    width: 42px; height: 42px; border-radius: 10px;
+    background: rgba(91,141,246,0.1);
+    border: 1px solid rgba(91,141,246,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  .project-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .project-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    flex: 1;
+  }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.2rem; }
+  .project-tag {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .project-link {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    color: var(--blue);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: gap 0.2s;
+  }
+  .project-link:hover { gap: 0.65rem; }
+  .project-link svg { width: 13px; height: 13px; }
+
+  /* ── RESEARCH ───────────────────────────────────── */
+  #research { background: var(--bg-card); }
+  .research-card {
+    background: var(--bg);
+    border: 1px solid rgba(155,109,247,0.25);
+    border-radius: 20px;
+    padding: 2.4rem;
+    max-width: 760px;
+    position: relative;
+    overflow: hidden;
+  }
+  .research-card::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(155,109,247,0.12) 0%, transparent 70%);
+  }
+  .research-venue {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(155,109,247,0.1);
+    border: 1px solid rgba(155,109,247,0.25);
+    border-radius: 999px;
+    padding: 0.25rem 0.8rem;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--purple);
+    margin-bottom: 1rem;
+  }
+  .research-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+    max-width: 600px;
+  }
+  .research-desc {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 1.4rem;
+    max-width: 560px;
+  }
+  .research-meta {
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .research-meta-item {
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .research-meta-item span { color: var(--text); }
+
+  /* ── EXPERIENCE ─────────────────────────────────── */
+  .exp-list { display: flex; flex-direction: column; gap: 1.2rem; }
+  .exp-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.6rem 1.8rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.5rem 2rem;
+    align-items: start;
+    transition: border-color 0.2s;
+  }
+  .exp-card:hover { border-color: var(--border-h); }
+  .exp-role { font-size: 0.98rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .exp-org { font-size: 0.85rem; color: var(--blue); margin-bottom: 0.6rem; }
+  .exp-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+  .exp-period {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--muted);
+    white-space: nowrap;
+    margin-top: 0.2rem;
+  }
+
+  /* ── CONTACT ────────────────────────────────────── */
+  #contact {
+    text-align: center;
+    padding-bottom: 8rem;
+    position: relative;
+  }
+  .contact-glow {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(91,141,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .contact-links {
+    display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+  .contact-link {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.75rem 1.4rem;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.88rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .contact-link:hover { border-color: var(--blue); background: rgba(91,141,246,0.06); color: var(--blue); }
+  .contact-link svg { width: 16px; height: 16px; }
+
+  /* ── FOOTER ─────────────────────────────────────── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.6rem 6vw;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-text { font-size: 0.8rem; color: var(--muted); }
+  .footer-mono { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); }
+
+  /* ── ANIMATIONS ─────────────────────────────────── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ─────────────────────────────────── */
+  @media (max-width: 768px) {
+    .about-grid { grid-template-columns: 1fr; }
+    .exp-card { grid-template-columns: 1fr; }
+    nav { padding: 1rem 4vw; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 4rem 4vw; }
+    .hero { padding: 6rem 4vw 4rem; }
+  }
+  @media (min-width: 1000px) {
+    .hero-photo { display: block; }
+    .hero-content { max-width: 580px; }
+  }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--bg-card2); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">rafael.taveira</span>
+  <ul class="nav-links">
+    <li><a href="#sobre">sobre</a></li>
+    <li><a href="#stack">stack</a></li>
+    <li><a href="#projetos">projetos</a></li>
+    <li><a href="#research">pesquisa</a></li>
+    <li><a href="#contact">contato</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">disponível para oportunidades júnior</div>
+    <h1>
+      Rafael<br>
+      <span class="hero-name-accent">Taveira</span>
+    </h1>
+    <p class="hero-sub">Ciência da Computação · Dados & IA · UFG</p>
+    <p class="hero-desc">
+      Construo <strong>pipelines de dados</strong>, modelos de <strong>Machine Learning</strong>
+      e sistemas com foco em interpretabilidade. Pesquisador em Explainable AI no
+      <strong>HAILab/UFG</strong> com publicação no IEEE SoutheastCon 2026.
+    </p>
+    <div class="hero-ctas">
+      <a href="#projetos" class="btn-primary">
+        ver projetos
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+      <a href="https://linkedin.com/in/rafael-silva-taveira" target="_blank" class="btn-ghost">LinkedIn</a>
+      <a href="https://github.com/RafaelSTaveira" target="_blank" class="btn-ghost">GitHub</a>
+    </div>
+  </div>
+  <!-- Substitua o src pela URL da sua foto -->
+  <img src="foto.jpg" alt="Rafael Taveira" class="hero-photo" />
+</section>
+
+<!-- SOBRE -->
+<section id="sobre">
+  <div class="reveal">
+    <p class="section-label">// sobre mim</p>
+    <h2 class="section-title">Quem sou</h2>
+  </div>
+  <div class="about-grid reveal">
+    <div class="about-text">
+      <p>
+        Estudante de <strong>Ciência da Computação pela UFG</strong> em fase final de graduação,
+        com experiência prática em engenharia de dados, machine learning e desenvolvimento backend,
+        adquirida na <strong>Residência Tecnológica BRISA/SOFTEX</strong>.
+      </p>
+      <p>
+        Pesquisador no <strong>HAILab</strong> (Human and Artificial Intelligence Lab),
+        com foco em Explainable AI — interpretabilidade de modelos, explicações
+        contrafactuais e métricas de qualidade de explicações. Minha pesquisa resultou em
+        publicação submetida ao <strong>IEEE SoutheastCon 2026</strong>.
+      </p>
+      <p>
+        Baseado em <strong>Goiânia, GO</strong>. Disponível para posições remotas em
+        análise de dados, ciência de dados e engenharia de dados.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num">1</div>
+        <div class="stat-label">publicação IEEE submetida</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">projetos técnicos na residência</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">40%</div>
+        <div class="stat-label">redução em rotinas manuais</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">200h</div>
+        <div class="stat-label">formação backend Python/Django</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="reveal">
+    <p class="section-label">// tecnologias</p>
+    <h2 class="section-title">Stack</h2>
+    <p class="section-desc">Ferramentas com que trabalho dia a dia em projetos reais.</p>
+  </div>
+  <div class="stack-groups reveal">
+    <div>
+      <p class="stack-group-label">linguagens</p>
+      <div class="stack-tags">
+        <span class="tag tag-blue">Python</span>
+        <span class="tag tag-blue">SQL</span>
+        <span class="tag">JavaScript (básico)</span>
+      </div>
+    </div>
+    <div>
+      <p class="stack-group-label">dados & machine learning</p>
+      <div class="stack-tags">
+        <span class="tag">Pandas</span>
+        <span class="tag">NumPy</span>
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">XGBoost</span>
+        <span class="tag">SHAP</span>
+        <span class="tag">Matplotlib</span>
+        <span class="tag">Streamlit</span>
+      </div>
+    </div>
+    <div>
+      <p class="stack-group-label">engenharia de dados</p>
+      <div class="stack-tags">
+        <span class="tag tag-purple">Airflow</span>
+        <span class="tag tag-purple">PySpark</span>
+        <span class="tag tag-purple">Databricks</span>
+        <span class="tag">ETL / ELT</span>
+        <span class="tag">Data Lake</span>
+        <span class="tag">PostgreSQL</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">SQL Server</span>
+      </div>
+    </div>
+    <div>
+      <p class="stack-group-label">cloud & devops</p>
+      <div class="stack-tags">
+        <span class="tag">AWS S3</span>
+        <span class="tag">AWS Glue</span>
+        <span class="tag">AWS Lambda</span>
+        <span class="tag">AWS EKS</span>
+        <span class="tag">Docker</span>
+        <span class="tag">Git / GitHub</span>
+        <span class="tag">CI/CD</span>
+        <span class="tag">GitHub Actions</span>
+      </div>
+    </div>
+    <div>
+      <p class="stack-group-label">bi & visualização</p>
+      <div class="stack-tags">
+        <span class="tag">Power BI</span>
+        <span class="tag">DAX</span>
+        <span class="tag">Power Query</span>
+        <span class="tag">Star Schema</span>
+      </div>
+    </div>
+    <div>
+      <p class="stack-group-label">desenvolvimento</p>
+      <div class="stack-tags">
+        <span class="tag">FastAPI</span>
+        <span class="tag">Flask</span>
+        <span class="tag">Django</span>
+        <span class="tag">JWT</span>
+        <span class="tag">Pytest</span>
+        <span class="tag">REST APIs</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETOS -->
+<section id="projetos">
+  <div class="reveal">
+    <p class="section-label">// projetos</p>
+    <h2 class="section-title">O que construí</h2>
+    <p class="section-desc">Projetos desenvolvidos na residência tecnológica e pesquisa.</p>
+  </div>
+  <div class="projects-grid reveal">
+
+    <div class="project-card featured">
+      <div class="project-icon">🔍</div>
+      <h3 class="project-title">ML Explainability Framework</h3>
+      <p class="project-desc">
+        Framework open source para gerar automaticamente demos interativas de ML com SHAP + LIME,
+        prontas para deploy no Hugging Face Spaces. Configuração via YAML, dois modos de demo:
+        explicabilidade e pipeline completo.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Python</span>
+        <span class="project-tag">SHAP</span>
+        <span class="project-tag">LIME</span>
+        <span class="project-tag">Streamlit</span>
+        <span class="project-tag">Hugging Face</span>
+      </div>
+      <a href="https://github.com/RafaelSTaveira/explicabilidade-framework" target="_blank" class="project-link">
+        ver no GitHub
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+      </a>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">⚡</div>
+      <h3 class="project-title">Pipeline ETL Orquestrado</h3>
+      <p class="project-desc">
+        Pipeline ETL integrando APIs, CSVs e bancos relacionais, com DAGs no Airflow para
+        orquestração e reprocessamento automático. Arquitetura Data Lake Bronze → Silver → Gold
+        com AWS S3 e Docker.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Airflow</span>
+        <span class="project-tag">PySpark</span>
+        <span class="project-tag">PostgreSQL</span>
+        <span class="project-tag">AWS S3</span>
+        <span class="project-tag">Docker</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🤖</div>
+      <h3 class="project-title">Predição Multiclasse + XAI</h3>
+      <p class="project-desc">
+        Estudo comparativo de RF, XGBoost e SVM para predição de absenteísmo de funcionários.
+        Seleção do modelo com melhor trade-off entre acurácia e interpretabilidade, com
+        explicações globais e locais via SHAP.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Scikit-learn</span>
+        <span class="project-tag">XGBoost</span>
+        <span class="project-tag">SHAP</span>
+        <span class="project-tag">Pandas</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">📊</div>
+      <h3 class="project-title">Dashboard Analítico Power BI</h3>
+      <p class="project-desc">
+        Painel de indicadores com Power BI, modelagem star schema, DAX para métricas
+        calculadas, Power Query para transformação de dados e integração via Direct Query
+        com SQL Server.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">Power BI</span>
+        <span class="project-tag">DAX</span>
+        <span class="project-tag">Power Query</span>
+        <span class="project-tag">SQL Server</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">🔗</div>
+      <h3 class="project-title">API REST com FastAPI</h3>
+      <p class="project-desc">
+        API RESTful com autenticação JWT, documentação automática OpenAPI/Swagger,
+        integração com PostgreSQL e containerização Docker. Versionamento com Git usando
+        branches e pull requests.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">FastAPI</span>
+        <span class="project-tag">PostgreSQL</span>
+        <span class="project-tag">Docker</span>
+        <span class="project-tag">JWT</span>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-icon">☁️</div>
+      <h3 class="project-title">Plataforma de Workloads de IA</h3>
+      <p class="project-desc">
+        Plataforma para gerenciamento de workloads de IA em AWS EKS, com integração via
+        APIs REST, pipelines de deploy automatizados e CI/CD com GitHub Actions para
+        rastreabilidade em produção.
+      </p>
+      <div class="project-tags">
+        <span class="project-tag">AWS EKS</span>
+        <span class="project-tag">Docker</span>
+        <span class="project-tag">CI/CD</span>
+        <span class="project-tag">GitHub Actions</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="reveal">
+    <p class="section-label">// pesquisa</p>
+    <h2 class="section-title">Publicação Científica</h2>
+    <p class="section-desc">Pesquisa em Explainable AI no HAILab/UFG.</p>
+  </div>
+  <div class="research-card reveal">
+    <div class="research-venue">📄 IEEE SoutheastCon 2026 — submetido</div>
+    <h3 class="research-title">
+      A Comparative Study of ML Models for Multiclass Employee Absenteeism Prediction with Explainability
+    </h3>
+    <p class="research-desc">
+      Estudo comparativo de modelos de Machine Learning (Random Forest, XGBoost, SVM) para predição
+      multiclasse de absenteísmo de funcionários, com análise de interpretabilidade via SHAP.
+      Avalia trade-offs entre acurácia e explicabilidade para apoio à tomada de decisão.
+    </p>
+    <div class="research-meta">
+      <div class="research-meta-item">
+        🎓 orientador: <span>Prof. Rogério Lopes Salvini</span>
+      </div>
+      <div class="research-meta-item">
+        🏛️ instituição: <span>HAILab — UFG / CNPq PIBITI</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIÊNCIA -->
+<section id="experiencia">
+  <div class="reveal">
+    <p class="section-label">// experiência</p>
+    <h2 class="section-title">Trajetória</h2>
+  </div>
+  <div class="exp-list reveal">
+    <div class="exp-card">
+      <div>
+        <p class="exp-role">Pesquisador — Explainable AI</p>
+        <p class="exp-org">HAILab · UFG / CNPq — PIBITI</p>
+        <p class="exp-desc">Desenvolvimento de biblioteca Python para explicações contrafactuais em modelos de ML. Implementação de técnicas SHAP e métricas de fidelidade e robustez.</p>
+      </div>
+      <p class="exp-period">Set 2025 – atual</p>
+    </div>
+    <div class="exp-card">
+      <div>
+        <p class="exp-role">Residente — Engenharia de Dados e IA</p>
+        <p class="exp-org">Residência Tecnológica BRISA · SOFTEX / UFG</p>
+        <p class="exp-desc">Projetos práticos em pipelines ETL, processamento distribuído com PySpark, dashboards com Power BI e plataformas de IA em AWS EKS.</p>
+      </div>
+      <p class="exp-period">Set 2025 – atual</p>
+    </div>
+    <div class="exp-card">
+      <div>
+        <p class="exp-role">Assistente de Suporte de TI</p>
+        <p class="exp-org">Grupo Jaime Câmara</p>
+        <p class="exp-desc">Queries SQL para análise de dados operacionais. Scripts Python para automação de processos internos, reduzindo tempo de execução de rotinas manuais em 40%. Integração de sistemas via APIs.</p>
+      </div>
+      <p class="exp-period">Jul 2023 – Jun 2024</p>
+    </div>
+    <div class="exp-card">
+      <div>
+        <p class="exp-role">Bacharelado em Ciência da Computação</p>
+        <p class="exp-org">Universidade Federal de Goiás (UFG)</p>
+        <p class="exp-desc">Conclusão em 2026/1. Bolsa Futuro Digital — Back-End Python/Django (200h, média 10,0). Formação em Programação Softex/IFG.</p>
+      </div>
+      <p class="exp-period">2021 – 2026</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-glow"></div>
+  <div class="reveal">
+    <p class="section-label">// contato</p>
+    <h2 class="section-title">Vamos conversar?</h2>
+    <p class="section-desc" style="margin: 0 auto 0; text-align: center;">
+      Aberto a oportunidades remotas júnior em dados, IA e backend.
+    </p>
+  </div>
+  <div class="contact-links reveal">
+    <a href="mailto:taveirasilvarafael@gmail.com" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+      taveirasilvarafael@gmail.com
+    </a>
+    <a href="https://linkedin.com/in/rafael-silva-taveira" target="_blank" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/RafaelSTaveira" target="_blank" class="contact-link">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+      GitHub
+    </a>
+  </div>
+</section>
+
+<footer>
+  <p class="footer-text">Rafael Silva Taveira · Goiânia, GO · 2026</p>
+  <p class="footer-mono">Ciência da Computação · UFG</p>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
